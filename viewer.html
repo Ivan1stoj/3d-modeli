@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <title>3D Stolica</title>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    body { font-family: sans-serif; margin: 0; padding: 20px; background: #f8f8f8; }
+    .palette { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 10px; }
+    .color { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+
+<h2>3D model radne stolice</h2>
+
+<model-viewer id="fotelja3d"
+  src="https://ivan1stoj.github.io/3d-modeli/stolica.glb"
+  auto-rotate
+  camera-controls
+  exposure="1.1"
+  shadow-intensity="1"
+  style="width: 100%; height: 600px;">
+</model-viewer>
+
+<div class="palette">
+  <div class="color" style="background:#000000" onclick="changeColor('#000000')"></div>
+  <div class="color" style="background:#ffffff" onclick="changeColor('#ffffff')"></div>
+  <div class="color" style="background:#8B0000" onclick="changeColor('#8B0000')"></div>
+  <div class="color" style="background:#6A5ACD" onclick="changeColor('#6A5ACD')"></div>
+  <div class="color" style="background:#808080" onclick="changeColor('#808080')"></div>
+  <div class="color" style="background:#A0522D" onclick="changeColor('#A0522D')"></div>
+  <div class="color" style="background:#228B22" onclick="changeColor('#228B22')"></div>
+  <div class="color" style="background:#B22222" onclick="changeColor('#B22222')"></div>
+  <div class="color" style="background:#C0C0C0" onclick="changeColor('#C0C0C0')"></div>
+  <div class="color" style="background:#FFF8DC" onclick="changeColor('#FFF8DC')"></div>
+  <div class="color" style="background:#D2B48C" onclick="changeColor('#D2B48C')"></div>
+</div>
+
+<script>
+  function hexToRgbaArray(hex) {
+    const bigint = parseInt(hex.slice(1), 16);
+    return [
+      ((bigint >> 16) & 255) / 255,
+      ((bigint >> 8) & 255) / 255,
+      (bigint & 255) / 255,
+      1
+    ];
+  }
+
+  function changeColor(hexColor) {
+    const viewer = document.getElementById('fotelja3d');
+    if (!viewer.model) return;
+
+    viewer.model.traverse((node) => {
+      if (node.isMesh && node.material && node.material.pbrMetallicRoughness) {
+        node.material.pbrMetallicRoughness.setBaseColorFactor(hexToRgbaArray(hexColor));
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
